@@ -23,6 +23,8 @@ export function registerCodeMode(
 
     const executeTool = createExecuteTool({
         prefix: "cellxgene",
+        // Verifiable provenance: cellxgene_execute results carry a _meta.citation.
+        source: { id: "cellxgene", name: "CZ CELLxGENE Discover", url: "https://cellxgene.cziscience.com" },
         catalog: cellxgeneCatalog,
         apiFetch,
         doNamespace: env.CELLXGENE_DATA_DO,
