@@ -29,6 +29,13 @@ export function registerCodeMode(
         apiFetch,
         doNamespace: env.CELLXGENE_DATA_DO,
         loader: env.CODE_MODE_LOADER,
+        // The isolate must outlive the HTTP budget it wraps, or the inner
+        // timeout can never be reached. cellxgeneFetch allows 60s for the large
+        // /collections and /datasets payloads (~3.1MB), but the executor
+        // defaults to 30s — so those calls were killed by the OUTER clock and
+        // surfaced as "Execution timed out" rather than as a slow-but-valid
+        // response. Ordering must be: HTTP timeout < isolate timeout.
+        timeout: 90_000,
     });
     executeTool.register(server as unknown as { tool: (...args: unknown[]) => void });
 }
