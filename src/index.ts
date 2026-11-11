@@ -5,10 +5,11 @@ import { registerQueryData } from "./tools/query-data";
 import { registerGetSchema } from "./tools/get-schema";
 import { registerCodeMode } from "./tools/code-mode";
 import { CellxgeneDataDO } from "./do";
+import type { CensusEnv } from "./lib/census";
 
 export { CellxgeneDataDO };
 
-interface CellxgeneEnv {
+interface CellxgeneEnv extends CensusEnv {
     CELLXGENE_DATA_DO: DurableObjectNamespace;
     CODE_MODE_LOADER: WorkerLoader;
 }

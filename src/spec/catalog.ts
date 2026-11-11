@@ -1,12 +1,14 @@
 import type { ApiCatalog } from "@bio-mcp/shared/codemode/catalog";
+import { censusEndpoints, censusWorkflows } from "./census";
 
 export const cellxgeneCatalog: ApiCatalog = {
-    name: "CELLxGENE Discover",
+    name: "CELLxGENE Discover and Census",
     baseUrl: "https://api.cellxgene.cziscience.com/curation/v1",
     version: "v1",
-    auth: "none",
-    endpointCount: 10,
+    auth: "Public Discover and Census release metadata; Census queries require a configured host backend and host token.",
+    endpointCount: 10 + censusEndpoints.length,
     notes:
+        "- /census/* routes are adapter operations, separate from Discover REST. Query access needs the Python Census/TileDB-SOMA service. Retain exact release, corpus and species; never merge join IDs across them.\n" +
         "- CELLxGENE Discover (CZI) hosts single-cell RNA-seq collections & datasets submitted by the community.\n" +
         "- PREFER targeted `/collections/{collection_id}` detail lookups over `/collections` list (list is large — can be 1MB+).\n" +
         "- When listing collections, responses may be large and slow — expect higher latency; consider staging.\n" +
@@ -14,7 +16,9 @@ export const cellxgeneCatalog: ApiCatalog = {
         "- `dataset_version_id` (immutable) vs `dataset_id` (mutable canonical) — most lookups accept either.\n" +
         "- Filters on /collections support `curator`, `owner`, `visibility` (PUBLIC / PRIVATE).\n" +
         "- Docs: https://api.cellxgene.cziscience.com/curation/ui/ (OpenAPI / Swagger).",
+    workflows: censusWorkflows,
     endpoints: [
+        ...censusEndpoints,
         {
             method: "GET",
             path: "/collections/{collection_id}",

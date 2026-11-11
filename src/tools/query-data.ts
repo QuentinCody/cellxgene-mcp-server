@@ -9,8 +9,8 @@ interface QueryEnv {
 export function registerQueryData(server: McpServer, env?: QueryEnv): void {
     const handler = createQueryDataHandler("CELLXGENE_DATA_DO", "cellxgene");
 
-    server.registerTool(
-        "cellxgene_query_data",
+    for (const name of ["cellxgene_query_data", "mcp_cellxgene_query_data"]) server.registerTool(
+        name,
         {
             title: "Query Staged CELLxGENE Data",
             description:

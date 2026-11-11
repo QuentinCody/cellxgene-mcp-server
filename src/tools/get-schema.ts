@@ -9,8 +9,8 @@ interface SchemaEnv {
 export function registerGetSchema(server: McpServer, env?: SchemaEnv): void {
     const handler = createGetSchemaHandler("CELLXGENE_DATA_DO", "cellxgene");
 
-    server.registerTool(
-        "cellxgene_get_schema",
+    for (const name of ["cellxgene_get_schema", "mcp_cellxgene_get_schema"]) server.registerTool(
+        name,
         {
             title: "Get Staged Data Schema",
             description:
